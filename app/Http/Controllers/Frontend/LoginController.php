@@ -84,11 +84,11 @@ class LoginController extends Controller
     }
 
     public function logout() {
-        $user = \auth()->user();
+        $user = User::where('id', auth()->user()->id)->first();
         Auth::logout();
         session()->invalidate();
         session()->regenerateToken();
-        if ($user->is_member === 1) {
+        if ((int)$user->is_member === 1) {
             return redirect('https://melsystech.io/scoutbeyond/wp-login.php?action=logout');
         }
         return redirect('/');
